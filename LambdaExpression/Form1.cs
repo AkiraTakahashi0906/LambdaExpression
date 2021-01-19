@@ -23,9 +23,9 @@ namespace LambdaExpression
             var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
 
             var result = new List<string>();
-            foreach(var val in values)
+            foreach (var val in values)
             {
-                if (val.Length>= 3)
+                if (val.Length >= 3)
                 {
                     result.Add(val);
                 }
@@ -50,7 +50,7 @@ namespace LambdaExpression
             return result.ToArray();
         }
 
-        private string[] GetValue2(string[] values,int len)
+        private string[] GetValue2(string[] values, int len)
         {
             var result = new List<string>();
             foreach (var val in values)
@@ -113,13 +113,13 @@ namespace LambdaExpression
         private void button5_Click(object sender, EventArgs e)
         {
             var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
-            var result = GetValue5(values, 3,Shiki4);
+            var result = GetValue5(values, 3, Shiki4);
             Console.WriteLine(string.Join(",", result));
         }
 
         delegate bool LenCheck5(string value, int len);
 
-        private string[] GetValue5(string[] values,int len, LenCheck5 lenCheck)
+        private string[] GetValue5(string[] values, int len, LenCheck5 lenCheck)
         {
             var result = new List<string>();
             foreach (var val in values)
@@ -132,7 +132,7 @@ namespace LambdaExpression
             return result.ToArray();
         }
 
-        private bool Shiki3(string value,int len)
+        private bool Shiki3(string value, int len)
         {
             return value.Length == len;
         }
@@ -196,6 +196,74 @@ namespace LambdaExpression
             return result.ToArray();
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
 
+            //匿名メソッド
+            var result = GetValue8(
+                values,
+                delegate (string value) { return value.Length == 3; }
+                );
+            Console.WriteLine(string.Join(",", result));
+
+            //ラムダ式1
+            var result2 = GetValue8(
+                values,
+                 (value) =>
+                 {
+                     return value.Length == 3;
+                 }
+                );
+            //ラムダ式2
+            var result3 = GetValue8(
+                values,
+                 value =>
+                 {
+                     return value.Length == 3;
+                 }
+                );
+
+            //ラムダ式3
+            var result4 = GetValue8(values, value => value.Length == 3);
+            Console.WriteLine(string.Join(",", result4));
+        }
+
+        //delegate bool LenCheck5(string value, int len);
+        private void button10_Click(object sender, EventArgs e)
+        {
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
+            var result = GetValue10(values, 3, 
+                                                (value,len)=>value.Length>= len);
+            Console.WriteLine(string.Join(",", result));
+        }
+
+        private string[] GetValue10(string[] values, int len, Func<string,int,bool> lenCheck)
+        {
+            var result = new List<string>();
+            foreach (var val in values)
+            {
+                if (lenCheck(val, len))
+                {
+                    result.Add(val);
+                }
+            }
+            return result.ToArray();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
+            var result = GetValue10(values, 3,
+                                                (value, len) =>
+                                                {
+                                                    if (value[0] == 'E')
+                                                    {
+                                                        return value.Length >= len;
+                                                    }
+                                                    return false;
+                                                });
+            Console.WriteLine(string.Join(",", result));
+        }
     }
 }
