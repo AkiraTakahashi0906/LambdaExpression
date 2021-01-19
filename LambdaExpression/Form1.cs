@@ -265,5 +265,130 @@ namespace LambdaExpression
                                                 });
             Console.WriteLine(string.Join(",", result));
         }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            GetData(DoConsole);
+            GetData(DoText);
+        }
+
+        private void DoConsole(int value)
+        {
+            Console.WriteLine(value + "%");
+        }
+
+        private void DoText(int value)
+        {
+            this.Text = value + "%";
+        }
+
+        private List<string> GetData(Action<int> progressAction)
+        {
+            var result = new List<string>();
+            for (int i =1; i<5; i++)
+            {
+                result.Add(DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff"));
+                System.Threading.Thread.Sleep(1000);
+                progressAction(i*20);
+            }
+            return result;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            GetData(delegate(int value)
+                        {
+                            Console.WriteLine(value + "%");
+                        });
+
+            GetData(value=>Console.WriteLine(value + "%"));
+            GetData(x => Console.WriteLine(x + "%"));
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            GetData14(Console14);
+        }
+
+        private void Console14()
+        {
+            Console.WriteLine(DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff"));
+        }
+
+        private List<string> GetData14(Action progressAction)
+        {
+            var result = new List<string>();
+            for (int i = 1; i < 5; i++)
+            {
+                result.Add(DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff"));
+                System.Threading.Thread.Sleep(1000);
+                progressAction();
+            }
+            return result;
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            GetData14(delegate ()
+                                            {
+                                                Console.WriteLine(DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff"));
+                                            });
+
+            GetData14(()=>Console.WriteLine(DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss.fff")));
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            var values = new List<string> { "ABCED", "AAAA", "BBBB", "CCCC", "DDDD" };
+
+            var result = values.Find(x => x.Contains("B"));
+            Console.WriteLine(string.Join(",", result));
+
+            var result2 = values.FindAll(x => x.Contains("B"));
+            Console.WriteLine(string.Join(",", result2));
+
+            var result3 = values.Exists(x => x.Contains("B"));
+            Console.WriteLine(string.Join(",", result3));
+
+            var result4 = values.Where(x => x.Contains("B"));
+            Console.WriteLine(string.Join(",", result4));
+
+            //遅延実行
+            var result5 = values.Where(x => x.Contains("B"));
+            values.Add("EEEEB");
+            Console.WriteLine(string.Join(",", result5));
+
+            //即時実行
+            var result6 = values.Where(x => x.Contains("B")).ToList();
+            values.Add("EEEEB2");
+            Console.WriteLine(string.Join(",", result6));
+
+            var result7 = values.Any(x => x.Contains("B"));
+            values.Add("EEEEB2");
+            Console.WriteLine(string.Join(",", result7));
+
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            var products = new List<Product>();
+            products.Add(new Product(1, "p1"));
+            products.Add(new Product(2, "p2"));
+            products.Add(new Product(3, "p31"));
+
+            var result = products.Find(x => x.Id == 2);
+            Console.WriteLine(string.Join(",", result.Name));
+        }
+
+        public class Product
+        {
+            public Product(int id,string name)
+            {
+                Id = id;
+                Name = name;
+            }
+            public int Id { get; }
+            public string Name { get; }
+        }
     }
 }
