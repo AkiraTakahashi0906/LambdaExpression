@@ -272,6 +272,68 @@ namespace LambdaExpression
                                                      }
                                                      return false;
                                                  });
+            Console.WriteLine(string.Join(",", result2));
+        }
+        //Actionはdelegateの戻り値がvoid
+        private void button12_Click(object sender, EventArgs e)
+        {
+            GetData(DoConsole);
+            //匿名メソッド
+            GetData(delegate (int value)
+            {
+                Console.WriteLine(value);
+                Console.WriteLine(value);
+                Console.WriteLine(value);
+                Console.WriteLine(value);
+            });
+            //ラムダ式
+            GetData(x => { Console.WriteLine(x); });
+        }
+
+        private void DoConsole(int value)
+        {
+            Console.WriteLine(value + "%");
+        }
+
+        private List<string> GetData(Action<int> progressAction)//Actionは戻り値がvoid
+        {
+            var result = new List<string>();
+            for ( int i = 1; i<=5; i++)
+            {
+                result.Add(DateTime.Now.ToString());
+                System.Threading.Thread.Sleep(1000);
+                progressAction(i*20);
+            }
+            return result;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            GetData13(Console13);
+            GetData13(() => { Console.WriteLine(DateTime.Now.ToString()); });
+        }
+
+        private void Console13()
+        {
+            Console.WriteLine(DateTime.Now.ToString());
+        }
+
+        private List<string> GetData13(Action progressAction)
+        {
+            var result = new List<string>();
+            for (int i = 1; i <= 5; i++)
+            {
+                result.Add(DateTime.Now.ToString());
+                System.Threading.Thread.Sleep(1000);
+                progressAction();
+            }
+            return result;
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            var values = new List<string> { "ABCED", "AAAA", "BBBB", "CCCC", "DDD" };
+            var result = values.Find(x => x.Contains("B"));
         }
     }
 }
