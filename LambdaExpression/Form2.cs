@@ -25,12 +25,12 @@ namespace LambdaExpression
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var values = new string[] {"A","BB","CCC","DDDD","EEEEE" };
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
             var result = GetValue1(values);
             Console.WriteLine(string.Join(",", result));
         }
 
-        private string[] GetValue1(string [] values)
+        private string[] GetValue1(string[] values)
         {
             var result = new List<string>();
             foreach (var val in values)
@@ -46,11 +46,11 @@ namespace LambdaExpression
         private void button2_Click(object sender, EventArgs e)
         {
             var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
-            var result = GetValue2(values,4);
+            var result = GetValue2(values, 4);
             Console.WriteLine(string.Join(",", result));
         }
 
-        private string[] GetValue2(string[] values,int len)
+        private string[] GetValue2(string[] values, int len)
         {
             var result = new List<string>();
             foreach (var val in values)
@@ -105,11 +105,11 @@ namespace LambdaExpression
         private void button5_Click(object sender, EventArgs e)
         {
             var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
-            var result = GetValue5(values,3, Shiki3);
+            var result = GetValue5(values, 3, Shiki3);
             Console.WriteLine(string.Join(",", result));
         }
 
-        delegate bool LenCheck5(string value,int len);
+        delegate bool LenCheck5(string value, int len);
         private string[] GetValue5(string[] values, int len, LenCheck5 lenCheck)
         {
             var result = new List<string>();
@@ -122,7 +122,7 @@ namespace LambdaExpression
             }
             return result.ToArray();
         }
-        private bool Shiki3(string value ,int len)
+        private bool Shiki3(string value, int len)
         {
             return value.Length == len;
         }
@@ -137,7 +137,7 @@ namespace LambdaExpression
         {
             var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
             var result = GetValue3(values,
-                                               //匿名メソッド
+                                              //匿名メソッド
                                               delegate (string s) { return s.Length == 3; }
                                               );
             Console.WriteLine(string.Join(",", result));
@@ -151,6 +151,62 @@ namespace LambdaExpression
                                               delegate (string s) { return s.Length >= 4; }
                                               );
             Console.WriteLine(string.Join(",", result));
+        }
+
+        //Predicate
+        //プレディケート
+        //delegate bool LenCheck(string value);
+        //ブール戻り値の引数一個の場合はドットネットが用意している。
+
+        private string[] GetValue8(string[] values, Predicate<string> lenCheck)
+        {
+            var result = new List<string>();
+            foreach (var val in values)
+            {
+                if (lenCheck(val))
+                {
+                    result.Add(val);
+                }
+            }
+            return result.ToArray();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
+            var result = GetValue8(values,
+                                              //匿名メソッド
+                                              delegate (string s) { return s.Length >= 4; }
+                                              );
+            Console.WriteLine(string.Join(",", result));
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
+            var result = GetValue8(values,
+                                  //匿名メソッド
+                                  delegate (string s) { return s.Length >= 4; }
+                                  );
+            var result2 = GetValue8(values,
+                                              //ラムダ式
+                                              (value) =>
+                                              {
+                                                  return value.Length == 3;
+                                              }
+                                              );
+            var result3 = GetValue8(values,
+                                  //ラムダ式 引数一つ
+                                  value =>
+                                  {
+                                      return value.Length == 3;
+                                  }
+                                  );
+            var result4 = GetValue8(values,
+                                  //ラムダ式 引数一つ 戻り値が式だけのとき
+                                  value => value.Length == 3
+                                  );
+            Console.WriteLine(string.Join(",", result4));
         }
     }
 }
