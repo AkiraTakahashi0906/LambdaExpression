@@ -122,6 +122,7 @@ namespace LambdaExpression
             }
             return result.ToArray();
         }
+
         private bool Shiki3(string value, int len)
         {
             return value.Length == len;
@@ -207,6 +208,70 @@ namespace LambdaExpression
                                   value => value.Length == 3
                                   );
             Console.WriteLine(string.Join(",", result4));
+        }
+
+        // Func
+        // delegate bool LenCheck5(string value,int len)
+        //                引数←|→戻り値 　Funcは最後の一つが戻り値　
+        // Func<string, int, bool> LenCheck5
+
+        //Action 戻り値がないパターン
+        //Action<string>
+        //
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
+            var result = GetValue10(values, 2, Shiki10);
+
+            var result3 = GetValue10(values, 2,
+                //匿名メソッド
+                delegate (string value, int len)
+                {
+                    return value.Length >= len;
+                });
+
+            var result2 = GetValue10(values, 2,
+                //ラムダ式
+                (value, len) => value.Length >= len);
+
+            Console.WriteLine(string.Join(",", result2));
+        }
+
+        private bool Shiki10(string value, int len)
+        {
+            return value.Length == len;
+        }
+
+        private string[] GetValue10(string[] values, int len, 
+            Func<string ,int,bool> lenCheck)
+        {
+            var result = new List<string>();
+            foreach (var val in values)
+            {
+                if (lenCheck(val, len))
+                {
+                    result.Add(val);
+                }
+            }
+            return result.ToArray();
+        }
+
+
+        //ラムダ式の右側が複数行になる場合
+        private void button11_Click(object sender, EventArgs e)
+        {
+            var values = new string[] { "A", "BB", "CCC", "DDDD", "EEEEE" };
+            var result2 = GetValue10(values, 2,
+                                                 //ラムダ式の右側が複数行になる場合
+                                                 (value, len) => 
+                                                 {
+                                                     if (value[0] == 'E')
+                                                     {
+                                                         return value.Length >= len;
+                                                     }
+                                                     return false;
+                                                 });
         }
     }
 }
